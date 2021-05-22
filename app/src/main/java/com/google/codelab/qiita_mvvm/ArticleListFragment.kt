@@ -9,7 +9,6 @@ import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
-
 class ArticleListFragment : Fragment() {
     private lateinit var binding: FragmentArticleListBinding
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
@@ -46,8 +45,3 @@ class ArticleListFragment : Fragment() {
         }
     }
 }
-
-data class Article(
-    val title: String,
-    val likeCount: Int
-)
