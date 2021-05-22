@@ -1,7 +1,8 @@
-package com.google.codelab.qiita_mvvm
+package com.google.codelab.qiita_mvvm.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

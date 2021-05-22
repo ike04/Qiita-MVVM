@@ -1,4 +1,4 @@
-package com.google.codelab.qiita_mvvm
+package com.google.codelab.qiita_mvvm.model
 
 data class Article(
     val title: String,

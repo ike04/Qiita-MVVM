@@ -1,4 +1,4 @@
-package com.google.codelab.qiita_mvvm
+package com.google.codelab.qiita_mvvm.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
+import com.google.codelab.qiita_mvvm.model.Article
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
