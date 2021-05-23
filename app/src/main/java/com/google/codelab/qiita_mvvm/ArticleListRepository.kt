@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 
 class ArticleListRepository {
-    fun fetchArticles(tag: String) : Single<List<Article>>{
+    fun fetchArticles(tag: String): Single<List<Article>> {
         return retrofit.create(ApiRequest::class.java).fetchArticles(tag)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
