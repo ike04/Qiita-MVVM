@@ -14,7 +14,6 @@ class ArticleListRepository {
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 return@map it.body()
-                    ?: throw IOException("failed to fetch")
             }
     }
 }

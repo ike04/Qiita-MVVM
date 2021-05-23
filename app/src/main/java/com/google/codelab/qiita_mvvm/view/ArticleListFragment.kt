@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
 import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
@@ -23,8 +22,7 @@ class ArticleListFragment : Fragment() {
         binding = FragmentArticleListBinding.inflate(inflater)
 
         viewModel = ArticleListViewModel()
-
-        binding.viewModel = viewModel
+        binding.hasArticles = false
 
         return binding.root
     }
@@ -38,8 +36,13 @@ class ArticleListFragment : Fragment() {
             viewModel.fetchArticles(binding.keywordEditText.text.toString())
         }
 
-        viewModel.articleRepos.observe(this, {
-            groupAdapter.update(it.map { ArticleListItemFactory(it) })
+        viewModel.articleRepos.observe(this, { articles ->
+            if(articles.isEmpty()){
+                binding.hasArticles = false
+            } else {
+                binding.hasArticles = true
+                groupAdapter.update(articles.map { ArticleListItemFactory(it) })
+            }
         })
     }
 
