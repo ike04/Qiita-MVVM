@@ -5,21 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
-import com.google.codelab.qiita_mvvm.model.Article
+import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
 class ArticleListFragment : Fragment() {
     private lateinit var binding: FragmentArticleListBinding
+    private lateinit var viewModel: ArticleListViewModel
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
-    private val testData: MutableList<Article> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentArticleListBinding.inflate(layoutInflater)
+        binding = FragmentArticleListBinding.inflate(inflater)
+
+        viewModel = ArticleListViewModel()
 
         return binding.root
     }
@@ -28,21 +31,12 @@ class ArticleListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.adapter = groupAdapter
-        createTestData()
-        groupAdapter.update(testData.map { ArticleListItemFactory(it) })
+
+        viewModel.fetchArticles("kotlin")
+
+        viewModel.articleRepos.observe(this, Observer {
+            groupAdapter.update(it.map { ArticleListItemFactory(it) })
+        })
     }
 
-    private fun createTestData() {
-        var i = 0
-        while (i <= 10) {
-
-            testData.add(
-                Article(
-                    title = "Sample$i",
-                    likeCount = i
-                )
-            )
-            i += 1
-        }
-    }
 }

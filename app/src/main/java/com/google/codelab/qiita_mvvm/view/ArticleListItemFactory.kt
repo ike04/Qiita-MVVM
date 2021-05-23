@@ -1,6 +1,8 @@
-package com.google.codelab.qiita_mvvm
+package com.google.codelab.qiita_mvvm.view
 
+import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.CellArticleBinding
+import com.google.codelab.qiita_mvvm.model.Article
 import com.xwray.groupie.databinding.BindableItem
 
 class ArticleListItemFactory(private val article: Article) : BindableItem<CellArticleBinding>() {

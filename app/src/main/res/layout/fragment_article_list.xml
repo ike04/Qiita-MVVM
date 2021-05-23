@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.ArticleListFragment">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel" />
-    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,7 +29,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="16dp"
             android:text="@string/search"
-            android:onClick="@{v -> viewModel.fetchArticles()}"
+            app:layout_constraintBottom_toBottomOf="@+id/keyword_edit_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/keyword_edit_text"
             app:layout_constraintTop_toTopOf="@+id/keyword_edit_text" />
@@ -43,6 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
