@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
 import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
@@ -37,7 +38,7 @@ class ArticleListFragment : Fragment() {
             if (binding.keywordEditText.text.isNotEmpty()) {
                 viewModel.fetchArticles(binding.keywordEditText.text.toString())
             } else {
-                Toast.makeText(requireContext(), "検索ワードを入力してください", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -47,7 +48,7 @@ class ArticleListFragment : Fragment() {
                 binding.hasArticles = false
             } else {
                 binding.hasArticles = true
-                groupAdapter.update(articles.map { ArticleListItemFactory(it) })
+                groupAdapter.update(articles.map { ArticleListItemFactory(it, requireContext()) })
             }
         })
     }
