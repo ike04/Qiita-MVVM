@@ -24,6 +24,8 @@ class ArticleListFragment : Fragment() {
 
         viewModel = ArticleListViewModel()
 
+        binding.viewModel = viewModel
+
         return binding.root
     }
 
@@ -32,9 +34,11 @@ class ArticleListFragment : Fragment() {
 
         binding.recyclerView.adapter = groupAdapter
 
-        viewModel.fetchArticles("kotlin")
+        binding.button.setOnClickListener {
+            viewModel.fetchArticles(binding.keywordEditText.text.toString())
+        }
 
-        viewModel.articleRepos.observe(this, Observer {
+        viewModel.articleRepos.observe(this, {
             groupAdapter.update(it.map { ArticleListItemFactory(it) })
         })
     }
