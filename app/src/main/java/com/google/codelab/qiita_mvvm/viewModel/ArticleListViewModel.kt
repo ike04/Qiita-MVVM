@@ -12,8 +12,8 @@ class ArticleListViewModel {
     val articleRepos: LiveData<List<Article>> = _articleRepos
 
     @SuppressLint("CheckResult")
-    fun fetchArticles(keyword: String) {
-        repository.fetchArticles(keyword)
+    fun fetchArticles(keyword: String, page: Int) {
+        repository.fetchArticles(keyword, page)
             .subscribe { articleRepos: List<Article> ->
                 _articleRepos.postValue(articleRepos)
             }

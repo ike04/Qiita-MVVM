@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, ArticleListFragment())
-            .addToBackStack(null)
             .commit()
 
         setContentView(binding.root)

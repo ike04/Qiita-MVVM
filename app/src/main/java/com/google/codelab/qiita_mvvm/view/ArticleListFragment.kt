@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
+import com.google.codelab.qiita_mvvm.model.Article
 import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -16,6 +18,9 @@ class ArticleListFragment : Fragment() {
     private lateinit var binding: FragmentArticleListBinding
     private lateinit var viewModel: ArticleListViewModel
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
+    private val articleList: MutableList<Article> = ArrayList()
+    private var isMoreLoad = true
+    private var currentPage = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +41,8 @@ class ArticleListFragment : Fragment() {
 
         binding.button.setOnClickListener {
             if (binding.keywordEditText.text.isNotEmpty()) {
-                viewModel.fetchArticles(binding.keywordEditText.text.toString())
+                currentPage = 1
+                viewModel.fetchArticles(binding.keywordEditText.text.toString(), currentPage)
             } else {
                 Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
             }
@@ -44,11 +50,30 @@ class ArticleListFragment : Fragment() {
         }
 
         viewModel.articleRepos.observe(this, { articles ->
+            if (articles.size < 20) {
+                isMoreLoad = false
+            }
             if (articles.isEmpty()) {
                 binding.hasArticles = false
             } else {
                 binding.hasArticles = true
-                groupAdapter.update(articles.map { ArticleListItemFactory(it, requireContext()) })
+                articleList.addAll(articles)
+                groupAdapter.update(articleList.map {
+                    ArticleListItemFactory(
+                        it,
+                        requireContext()
+                    )
+                })
+            }
+        })
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1) && isMoreLoad) {
+                    currentPage += 1
+                    viewModel.fetchArticles(binding.keywordEditText.text.toString(), currentPage)
+                }
             }
         })
     }

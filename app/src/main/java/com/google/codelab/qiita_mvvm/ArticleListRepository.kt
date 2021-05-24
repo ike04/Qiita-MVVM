@@ -8,8 +8,8 @@ import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 
 class ArticleListRepository {
-    fun fetchArticles(tag: String): Single<List<Article>> {
-        return retrofit.create(ApiRequest::class.java).fetchArticles(tag)
+    fun fetchArticles(tag: String, page: Int): Single<List<Article>> {
+        return retrofit.create(ApiRequest::class.java).fetchArticles(tag, page, 20)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
