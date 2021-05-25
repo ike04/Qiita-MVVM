@@ -14,6 +14,8 @@ import com.google.codelab.qiita_mvvm.model.Article
 import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 
 class ArticleListFragment : Fragment() {
     private lateinit var binding: FragmentArticleListBinding
@@ -30,9 +32,11 @@ class ArticleListFragment : Fragment() {
         binding = FragmentArticleListBinding.inflate(inflater)
 
         val factory: ViewModelProvider.Factory = ViewModelProvider.NewInstanceFactory()
-        viewModel = ViewModelProvider(requireActivity(), factory).get(ArticleListViewModel::class.java)
+        viewModel =
+            ViewModelProvider(requireActivity(), factory).get(ArticleListViewModel::class.java)
 
         binding.hasArticles = false
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -42,17 +46,18 @@ class ArticleListFragment : Fragment() {
 
         binding.recyclerView.adapter = groupAdapter
 
-        binding.button.setOnClickListener {
-            articleList.clear()
-            if (binding.keywordEditText.text.isNotEmpty()) {
-                viewModel.keyword = binding.keywordEditText.text.toString()
-                currentPage = 1
-                viewModel.fetchArticles(viewModel.keyword.toString(), currentPage)
-            } else {
-                Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
+        viewModel.searchArticles
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                articleList.clear()
+                if (binding.keywordEditText.text.isNotEmpty()) {
+                    viewModel.keyword = binding.keywordEditText.text.toString()
+                    currentPage = 1
+                    viewModel.fetchArticles(viewModel.keyword.toString(), currentPage)
+                } else {
+                    Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
+                }
             }
-
-        }
 
         viewModel.articleRepos.observe(this, { articles ->
             if (articles.size < 20) {
