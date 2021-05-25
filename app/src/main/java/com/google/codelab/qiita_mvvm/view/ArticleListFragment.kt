@@ -19,6 +19,7 @@ class ArticleListFragment : Fragment() {
     private lateinit var viewModel: ArticleListViewModel
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
     private val articleList: MutableList<Article> = ArrayList()
+    private var keyword: String? = null
     private var isMoreLoad = true
     private var currentPage = 1
 
@@ -40,9 +41,11 @@ class ArticleListFragment : Fragment() {
         binding.recyclerView.adapter = groupAdapter
 
         binding.button.setOnClickListener {
+            articleList.clear()
             if (binding.keywordEditText.text.isNotEmpty()) {
+                keyword = binding.keywordEditText.text.toString()
                 currentPage = 1
-                viewModel.fetchArticles(binding.keywordEditText.text.toString(), currentPage)
+                viewModel.fetchArticles(keyword.toString(), currentPage)
             } else {
                 Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
             }
@@ -72,7 +75,7 @@ class ArticleListFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && isMoreLoad) {
                     currentPage += 1
-                    viewModel.fetchArticles(binding.keywordEditText.text.toString(), currentPage)
+                    keyword?.let { viewModel.fetchArticles(it, currentPage) }
                 }
             }
         })
