@@ -17,24 +17,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/ic_baseline_search_24"
+            app:layout_constraintBottom_toBottomOf="@+id/keyword_edit_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/keyword_edit_text" />
+
         <EditText
             android:id="@+id/keyword_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:hint="Kotlin, android etc..."
             android:layout_marginTop="16dp"
             android:autofillHints="keyword"
             android:ems="10"
             android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/search"
             app:layout_constraintBottom_toBottomOf="@+id/keyword_edit_text"
@@ -68,14 +76,13 @@
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/missing_pages"
             android:visibility="@{hasArticles ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyword_edit_text"
-            />
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/missing_pages" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
@@ -19,7 +20,6 @@ class ArticleListFragment : Fragment() {
     private lateinit var viewModel: ArticleListViewModel
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
     private val articleList: MutableList<Article> = ArrayList()
-    private var keyword: String? = null
     private var isMoreLoad = true
     private var currentPage = 1
 
@@ -29,7 +29,9 @@ class ArticleListFragment : Fragment() {
     ): View {
         binding = FragmentArticleListBinding.inflate(inflater)
 
-        viewModel = ArticleListViewModel()
+        val factory: ViewModelProvider.Factory = ViewModelProvider.NewInstanceFactory()
+        viewModel = ViewModelProvider(requireActivity(), factory).get(ArticleListViewModel::class.java)
+
         binding.hasArticles = false
 
         return binding.root
@@ -43,9 +45,9 @@ class ArticleListFragment : Fragment() {
         binding.button.setOnClickListener {
             articleList.clear()
             if (binding.keywordEditText.text.isNotEmpty()) {
-                keyword = binding.keywordEditText.text.toString()
+                viewModel.keyword = binding.keywordEditText.text.toString()
                 currentPage = 1
-                viewModel.fetchArticles(keyword.toString(), currentPage)
+                viewModel.fetchArticles(viewModel.keyword.toString(), currentPage)
             } else {
                 Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
             }
@@ -75,7 +77,7 @@ class ArticleListFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && isMoreLoad) {
                     currentPage += 1
-                    keyword?.let { viewModel.fetchArticles(it, currentPage) }
+                    viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
                 }
             }
         })
