@@ -46,7 +46,7 @@ class ArticleListFragment : Fragment() {
 
         binding.recyclerView.adapter = groupAdapter
 
-        viewModel.searchArticles
+        viewModel.onClickSearch
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy {
                 articleList.clear()
@@ -59,23 +59,25 @@ class ArticleListFragment : Fragment() {
                 }
             }
 
-        viewModel.articleRepos.observe(this, { articles ->
-            if (articles.size < 20) {
-                isMoreLoad = false
+        viewModel.fetchArticleList
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { articles ->
+                if (articles.size < 20) {
+                    isMoreLoad = false
+                }
+                if (articles.isEmpty()) {
+                    binding.hasArticles = false
+                } else {
+                    binding.hasArticles = true
+                    articleList.addAll(articles)
+                    groupAdapter.update(articleList.map {
+                        ArticleListItemFactory(
+                            it,
+                            requireContext()
+                        )
+                    })
+                }
             }
-            if (articles.isEmpty()) {
-                binding.hasArticles = false
-            } else {
-                binding.hasArticles = true
-                articleList.addAll(articles)
-                groupAdapter.update(articleList.map {
-                    ArticleListItemFactory(
-                        it,
-                        requireContext()
-                    )
-                })
-            }
-        })
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
