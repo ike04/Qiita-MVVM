@@ -13,7 +13,7 @@ class ArticleListRepository {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {
-                return@map it.body()
+                it.body()
             }
     }
 }

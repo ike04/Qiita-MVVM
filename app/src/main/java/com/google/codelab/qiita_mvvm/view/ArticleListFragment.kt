@@ -66,7 +66,7 @@ class ArticleListFragment : Fragment() {
                     isMoreLoad = false
                 }
                 if (articles.isEmpty()) {
-                    binding.hasArticles = false
+                    Toast.makeText(requireContext(), R.string.no_articles, Toast.LENGTH_SHORT).show()
                 } else {
                     binding.hasArticles = true
                     articleList.addAll(articles)
