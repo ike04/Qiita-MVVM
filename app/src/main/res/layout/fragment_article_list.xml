@@ -2,7 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ArticleListFragment">
+    tools:context=".view.ArticleListFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="hasArticles"
+            type="Boolean" />
+
+        <variable
+            name="viewModel"
+            type="com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,33 +25,60 @@
             android:id="@+id/keyword_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
+            android:autofillHints="keyword"
             android:ems="10"
+            android:hint="keyword(Android etc...)"
             android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:autofillHints="keyword" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/search"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{ v-> viewModel.onSearchArticles()}"
+            app:layout_constraintBottom_toBottomOf="@+id/keyword_edit_text"
             app:layout_constraintStart_toEndOf="@+id/keyword_edit_text"
-            app:layout_constraintTop_toTopOf="@+id/keyword_edit_text" />
+            app:layout_constraintTop_toTopOf="@+id/keyword_edit_text"
+            app:srcCompat="@drawable/ic_baseline_search_24" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyword_edit_text" />
+
+        <View
+            android:id="@+id/no_articles"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:visibility="@{hasArticles ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/keyword_edit_text" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{hasArticles ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/keyword_edit_text"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/missing_pages" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
