@@ -2,9 +2,9 @@ package com.google.codelab.qiita_mvvm.viewModel
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
-import com.google.codelab.qiita_mvvm.repository.ArticleListRepository
 import com.google.codelab.qiita_mvvm.Signal
 import com.google.codelab.qiita_mvvm.model.Article
+import com.google.codelab.qiita_mvvm.repository.ArticleListRepository
 import io.reactivex.subjects.PublishSubject
 
 class ArticleListViewModel : ViewModel() {
@@ -20,7 +20,6 @@ class ArticleListViewModel : ViewModel() {
             .subscribe { articleList ->
                 fetchArticleList.onNext(articleList)
             }
-
     }
 
     fun onSearchArticles() {

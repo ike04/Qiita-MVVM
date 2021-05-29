@@ -24,7 +24,7 @@ class ArticleListFragment : Fragment() {
     private val articleList: MutableList<Article> = ArrayList()
     private var isMoreLoad = true
     private var currentPage = 1
-
+∫
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
