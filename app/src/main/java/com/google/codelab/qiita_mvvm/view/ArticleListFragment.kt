@@ -14,6 +14,7 @@ import com.google.codelab.qiita_mvvm.model.Article
 import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.OnItemClickListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 
@@ -24,7 +25,17 @@ class ArticleListFragment : Fragment() {
     private val articleList: MutableList<Article> = ArrayList()
     private var isMoreLoad = true
     private var currentPage = 1
-∫
+
+    private val onItemClickListener = OnItemClickListener { item, _ ->
+        // どのitemがクリックされたかindexを取得
+        val index = groupAdapter.getAdapterPosition(item)
+
+        fragmentManager?.beginTransaction()
+            ?.replace(R.id.frameLayout, ArticleWebViewFragment.newInstance(articleList[index].url))
+            ?.addToBackStack(null)
+            ?.commit()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,7 +77,8 @@ class ArticleListFragment : Fragment() {
                     isMoreLoad = false
                 }
                 if (articles.isEmpty()) {
-                    Toast.makeText(requireContext(), R.string.no_articles, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.no_articles, Toast.LENGTH_SHORT)
+                        .show()
                 } else {
                     binding.hasArticles = true
                     articleList.addAll(articles)
@@ -78,6 +90,8 @@ class ArticleListFragment : Fragment() {
                     })
                 }
             }
+
+        groupAdapter.setOnItemClickListener(onItemClickListener)
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
