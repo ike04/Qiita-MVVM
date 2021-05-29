@@ -2,7 +2,7 @@ package com.google.codelab.qiita_mvvm.viewModel
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
-import com.google.codelab.qiita_mvvm.ArticleListRepository
+import com.google.codelab.qiita_mvvm.repository.ArticleListRepository
 import com.google.codelab.qiita_mvvm.Signal
 import com.google.codelab.qiita_mvvm.model.Article
 import io.reactivex.subjects.PublishSubject
