@@ -104,4 +104,10 @@ class ArticleListFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!articleList.isEmpty()) {
+            binding.hasArticles = true
+        }
+    }
 }

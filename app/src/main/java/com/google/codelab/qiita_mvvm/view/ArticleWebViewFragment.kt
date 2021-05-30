@@ -29,7 +29,7 @@ class ArticleWebViewFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentArticleWebViewBinding.inflate(layoutInflater)
         binding.webView.loadUrl(url)
 
