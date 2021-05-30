@@ -64,7 +64,7 @@ class ArticleListFragment : Fragment() {
                 if (binding.keywordEditText.text.isNotEmpty()) {
                     viewModel.keyword = binding.keywordEditText.text.toString()
                     currentPage = 1
-                    viewModel.fetchArticles(viewModel.keyword.toString(), currentPage)
+                    viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
                 } else {
                     Toast.makeText(requireContext(), R.string.no_text, Toast.LENGTH_SHORT).show()
                 }
