@@ -74,22 +74,17 @@ class ArticleListFragment : Fragment() {
         viewModel.fetchArticleList
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { articles ->
-                if (articles.size < 20) {
-                    isMoreLoad = false
-                }
-                if (articles.isEmpty()) {
-                    Toast.makeText(requireContext(), R.string.no_articles, Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    binding.hasArticles = true
-                    articleList.addAll(articles)
-                    groupAdapter.update(articleList.map {
-                        ArticleListItemFactory(
-                            it,
-                            requireContext()
-                        )
-                    })
-                }
+                isMoreLoad = articles.size == 20
+
+                binding.hasArticles = true
+                articleList.addAll(articles)
+                groupAdapter.update(articleList.map {
+                    ArticleListItemFactory(
+                        it,
+                        requireContext()
+                    )
+                })
+
             }
 
         viewModel.errorStream
