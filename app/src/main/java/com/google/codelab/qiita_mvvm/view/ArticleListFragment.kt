@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
 import com.google.codelab.qiita_mvvm.model.Article
@@ -94,7 +95,10 @@ class ArticleListFragment : Fragment() {
         viewModel.errorStream
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { failure ->
-                Toast.makeText(requireContext(), failure.message, Toast.LENGTH_SHORT).show()
+                Snackbar.make(view, failure.message, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.retry) {
+                        viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
+                    }.show()
             }
 
         groupAdapter.setOnItemClickListener(onItemClickListener)

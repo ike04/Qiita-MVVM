@@ -28,7 +28,8 @@ class ArticleListViewModel : ViewModel() {
                         fetchArticles(keyword, page)
                     }
                     errorStream.onNext(f.message)
-                })
+                }
+            )
     }
 
     fun onSearchArticles() {
