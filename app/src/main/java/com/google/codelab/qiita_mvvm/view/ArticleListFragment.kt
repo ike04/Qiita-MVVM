@@ -91,6 +91,12 @@ class ArticleListFragment : Fragment() {
                 }
             }
 
+        viewModel.errorStream
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { failure ->
+                Toast.makeText(requireContext(), failure.message, Toast.LENGTH_SHORT).show()
+            }
+
         groupAdapter.setOnItemClickListener(onItemClickListener)
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

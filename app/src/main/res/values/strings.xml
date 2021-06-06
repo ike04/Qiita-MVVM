@@ -7,4 +7,6 @@
     <string name="LGTM">LGTM数：</string>
     <string name="no_text">検索ワードを入力してください</string>
     <string name="no_articles">一致する投稿が見つかりませんでした。</string>
+    <string name="offline_error">ネットワークに接続できません。</string>
+    <string name="unexpected_error">予期せぬエラーが発生しました。</string>
 </resources>
