@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.codelab.qiita_mvvm.R
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleListBinding
 import com.google.codelab.qiita_mvvm.model.Article
@@ -73,22 +74,26 @@ class ArticleListFragment : Fragment() {
         viewModel.fetchArticleList
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { articles ->
-                if (articles.size < 20) {
-                    isMoreLoad = false
-                }
-                if (articles.isEmpty()) {
-                    Toast.makeText(requireContext(), R.string.no_articles, Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    binding.hasArticles = true
-                    articleList.addAll(articles)
-                    groupAdapter.update(articleList.map {
-                        ArticleListItemFactory(
-                            it,
-                            requireContext()
-                        )
-                    })
-                }
+                isMoreLoad = articles.size == 20
+
+                binding.hasArticles = true
+                articleList.addAll(articles)
+                groupAdapter.update(articleList.map {
+                    ArticleListItemFactory(
+                        it,
+                        requireContext()
+                    )
+                })
+
+            }
+
+        viewModel.errorStream
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy { failure ->
+                Snackbar.make(view, failure.message, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.retry) {
+                        viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
+                    }.show()
             }
 
         groupAdapter.setOnItemClickListener(onItemClickListener)
