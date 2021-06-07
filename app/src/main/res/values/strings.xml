@@ -5,7 +5,7 @@
     <string name="title">title</string>
     <string name="likes_count">likes_count</string>
     <string name="LGTM">LGTM数：</string>
-    <string name="retry">retry：</string>
+    <string name="retry">retry</string>
     <string name="no_text">検索ワードを入力してください</string>
     <string name="no_articles">一致する投稿が見つかりませんでした。</string>
     <string name="offline_error">ネットワークに接続できません。</string>

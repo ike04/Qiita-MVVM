@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,7 @@ class ArticleListFragment : Fragment() {
             ViewModelProvider(requireActivity(), factory).get(ArticleListViewModel::class.java)
 
         binding.hasArticles = false
+        binding.isLoading = false
         binding.viewModel = viewModel
 
         return binding.root
@@ -63,6 +65,7 @@ class ArticleListFragment : Fragment() {
             .subscribeBy {
                 articleList.clear()
                 if (binding.keywordEditText.text.isNotEmpty()) {
+                    binding.isLoading = true
                     viewModel.keyword = binding.keywordEditText.text.toString()
                     currentPage = 1
                     viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
@@ -84,6 +87,7 @@ class ArticleListFragment : Fragment() {
                         requireContext()
                     )
                 })
+                binding.isLoading = false
 
             }
 
@@ -92,8 +96,10 @@ class ArticleListFragment : Fragment() {
             .subscribeBy { failure ->
                 Snackbar.make(view, failure.message, Snackbar.LENGTH_SHORT)
                     .setAction(R.string.retry) {
+                        binding.isLoading = true
                         viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
                     }.show()
+                binding.isLoading = false
             }
 
         groupAdapter.setOnItemClickListener(onItemClickListener)
@@ -102,6 +108,7 @@ class ArticleListFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && isMoreLoad) {
+                    binding.isLoading = true
                     currentPage += 1
                     viewModel.keyword?.let { viewModel.fetchArticles(it, currentPage) }
                 }
