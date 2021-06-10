@@ -13,6 +13,10 @@
             type="Boolean" />
 
         <variable
+            name="isLoading"
+            type="Boolean" />
+
+        <variable
             name="viewModel"
             type="com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel" />
     </data>
@@ -45,6 +49,17 @@
             app:layout_constraintStart_toEndOf="@+id/keyword_edit_text"
             app:layout_constraintTop_toTopOf="@+id/keyword_edit_text"
             app:srcCompat="@drawable/ic_baseline_search_24" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/recycler_view" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
