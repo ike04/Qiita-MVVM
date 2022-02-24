@@ -7,11 +7,16 @@ import com.google.codelab.qiita_mvvm.Signal
 import com.google.codelab.qiita_mvvm.getMessage
 import com.google.codelab.qiita_mvvm.model.Article
 import com.google.codelab.qiita_mvvm.repository.ArticleListRepository
+import com.google.codelab.qiita_mvvm.repository.ArticleListRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class ArticleListViewModel : ViewModel() {
-    private val repository = ArticleListRepository()
+@HiltViewModel
+class ArticleListViewModel @Inject constructor(
+    private val repository: ArticleListRepository
+) : ViewModel() {
     val onClickSearch: PublishSubject<Signal> = PublishSubject.create()
     val fetchArticleList: PublishSubject<List<Article>> = PublishSubject.create()
     val errorStream: PublishSubject<FailureType> = PublishSubject.create()
