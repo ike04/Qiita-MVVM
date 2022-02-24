@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.codelab.qiita_mvvm.databinding.FragmentArticleWebViewBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ArticleWebViewFragment : Fragment() {
     private lateinit var binding: FragmentArticleWebViewBinding
     private val url: String

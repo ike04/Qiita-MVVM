@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -17,12 +18,14 @@ import com.google.codelab.qiita_mvvm.viewModel.ArticleListViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.OnItemClickListener
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 
+@AndroidEntryPoint
 class ArticleListFragment : Fragment() {
     private lateinit var binding: FragmentArticleListBinding
-    private lateinit var viewModel: ArticleListViewModel
+    private val viewModel: ArticleListViewModel by viewModels()
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
     private val articleList: MutableList<Article> = ArrayList()
     private var isMoreLoad = true
@@ -43,10 +46,6 @@ class ArticleListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentArticleListBinding.inflate(inflater)
-
-        val factory: ViewModelProvider.Factory = ViewModelProvider.NewInstanceFactory()
-        viewModel =
-            ViewModelProvider(requireActivity(), factory).get(ArticleListViewModel::class.java)
 
         binding.hasArticles = false
         binding.isLoading = false
